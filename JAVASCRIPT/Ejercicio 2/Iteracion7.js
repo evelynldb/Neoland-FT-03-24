@@ -37,4 +37,4 @@ const buscarPersonaje = (personajeABuscar, arrayDePersonajes) => {
 const resultBuscarPersonaje = buscarPersonaje("Bruce", nameFinder);
 
 console.log(resultBuscarPersonaje);
-// como haría para mostrarme las diferentes posiciones, en caso que el nombre esté repetido.
+// como haría para mostrarme las diferentes posiciones, en caso que el nombre esté repetido??
