@@ -16,6 +16,17 @@ const counterWords = [
   "code",
 ];
 
-const repeatCounter = (arrayContador) => {
-  for (let i = 0; i < arrayContador.length; i++) {}
-};
+function repeatCounter(arrayPalabras) {
+  const palabrasRepetidas = {};
+
+  arrayPalabras.forEach((word) => {
+    if (palabrasRepetidas[word]) {
+      palabrasRepetidas[word]++;
+    } else {
+      palabrasRepetidas[word] = 1;
+    }
+  });
+
+  return palabrasRepetidas;
+}
+console.log(repeatCounter(counterWords));

@@ -78,3 +78,38 @@ const resultBuscarPersonaje2 = buscarPersonaje("Marc", nameFinder);
 
 console.log(resultBuscarPersonaje);
 console.log(resultBuscarPersonaje2);
+
+// -----------------------FOREACH--------------------
+/**
+ * lleva implicito el for, puede tener hasta 3 parametros, y cada posicion indica una cosa, por lo tanto
+ * es una funcion dentro de una funcion, y no necesita retunr.
+ */
+
+const numbers = [1, 2, 3, 4, 5];
+
+numbers.forEach(function (number, index) {
+  console.log(`Elemento ${index}: ${number}`);
+});
+//  otro ejemplo de forEach:
+
+const personas = [
+  { nombre: "Juan", edad: 25, ciudad: "Madrid" },
+  { nombre: "María", edad: 30, ciudad: "Barcelona" },
+  { nombre: "Carlos", edad: 35, ciudad: "Valencia" },
+];
+
+personas.forEach(function (persona, indice, array) {
+  console.log(
+    `Nombre: ${persona.nombre}, Edad: ${persona.edad}, Ciudad: ${persona.ciudad}`
+  );
+  console.log(`Índice: ${indice}`);
+  console.log(`Array completo:`, array);
+});
+
+const number = [1, 2, 3, 4, 5];
+
+number.forEach(function (number, index, array) {
+  array[index] = number * 2;
+});
+
+console.log(number);
