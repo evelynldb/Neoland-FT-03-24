@@ -47,15 +47,27 @@ const users = [
   },
 ];
 
-const conteo = {
+/*const ejemplo = {
   train: 3,
   firecamp: 5,
   wind: 1,
 };
+ejemplo["train"] = 9; // con esto añadimos la clave al objeto conteo si no existe!
+ejemplo.wind = 1; 
+ejemplo.wind = 10; si existe la sobreescribe!
+>>como en el Ejercicio 2. Iteracion8
+*/
+
+const conteo = {};
 
 for (let user of users) {
   for (let sound in user.favoritesSounds) {
+    if (conteo[sound]) {
+      conteo[sound]++;
+    } else {
+      conteo[sound] = 1;
+    }
   }
 }
 
-console.log(sound);
+console.log(conteo);
