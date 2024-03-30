@@ -1,26 +1,14 @@
-var dieHardArray = [1, 2, "Simon", "John McClane", "Zeus Carver"];
+const numbers = [5, 5, 5, 5, 5, 5];
+/**
+ * el 0 es en lo que empieza el valor del acumulador
+ */
+const total = numbers.reduce((acc, num) => acc + num, 0);
+//console.log("🚀 ~ total:", total);
 
-// Iterar un Array
-/*for (let value of dieHardArray) {
-  console.log(value);
-}
-
-for (let key in dieHardArray) {
-  console.log(key);
-}
-*/
-// Iterar un Objeto
-
-var dieHardObj = {
-  name: "John",
-  surname: "McClane",
-  age: 37,
+const suma = (array) => {
+  let acc = 0;
+  array.forEach((num) => (acc += num));
+  return acc;
 };
-
-for (let key in dieHardObj) {
-  console.log(key);
-}
-
-for (let value of dieHardObj) {
-  console.log(value);
-}
+const resultTotal = suma(numbers);
+console.log(resultTotal);
