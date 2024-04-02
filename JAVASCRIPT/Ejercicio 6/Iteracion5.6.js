@@ -17,8 +17,9 @@ const streamers2 = [
 input.addEventListener("input", (e) => {
   e.preventDefault();
   const streamers2Buscador = streamers2.filter((player) =>
-    player.name.includes(input.value)
+    player.name.toLowerCase().includes(input.value.toLowerCase())
   );
   console.log(streamers2Buscador);
-  resultados.innerHTML = streamers2Buscador.map((element) => element.name);
+  console.log(e);
+  resultados.innerHTML = streamers2Buscador.map((element) => element.name); //con esto lo que hago es inyectarlo en el html, y con el .map recorro el array y saco el  .name
 });

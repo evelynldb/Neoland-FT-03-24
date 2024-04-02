@@ -12,7 +12,7 @@ const toys = [
 
 let filterToys = [];
 
-/** TODO: No se están eliminando, estoy creando un nuevo array sin los gatos.
+/** // TODO: Laura No se están eliminando, estoy creando un nuevo array sin los gatos.
  * ¿Cómo se hace para eliminarlos?
  * */
 
