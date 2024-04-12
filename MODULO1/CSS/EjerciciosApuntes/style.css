@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  border: 2px solid green;
+}
+
+.titleContainer {
+  width: 30vw;
+  display: block;
+  align-content: center;
+  text-align: center;
+  border: 2px solid blue;
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    display: flex;
+  }
+
+  .titleContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 30vw;
+    font-size: 10px;
+  }
+
+  h1 {
+    max-width: 30vw;
+  }
+}

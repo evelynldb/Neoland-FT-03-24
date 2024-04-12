@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+div {
+  height: 40px;
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  display: inline;
+  background-color: #e74c3c;
+  border: 1px solid black;
+}
+
+p {
+  height: 40px;
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  display: inline;
+  background-color: #9b59b6;
+  border: 1px solid black;
+}
+
+span {
+  height: 40px;
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  display: inline;
+
+  background-color: #3498db;
+  border: 1px solid black;
+}
+a {
+  height: 40px;
+  width: 150px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #2ecc71;
+
+  border: 1px solid black;
+}
