@@ -63,7 +63,11 @@ texto1.textContent = "Voy en medio!";
 const divElements = document.querySelectorAll("div");
 const divFirst = divElements[0];
 
-divFirst.parentNode.insertBefore(texto1, divElements[1]);
+divFirst.parentNode.insertBefore(
+  texto1,
+  divElements[1]
+); /*---------  también valdría
+poner body en lugar de parentNode, pero lo he usado para entender mejor lo de la estructura DOM*/
 
 /*2.9 Inserta p con el texto 'Voy dentro!', dentro de todos los div con la clase .fn-insert-here*/
 
