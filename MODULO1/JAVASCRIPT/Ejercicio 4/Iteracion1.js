@@ -24,8 +24,23 @@ const moviesCategories = [];
 
 for (let movie of movies) {
   for (let categorie of movie.categories) {
-    !moviesCategories.includes(categorie) && moviesCategories.push(categorie);
+    !moviesCategories.includes(categorie) && moviesCategories.push(categorie); //si la primera parte es falsa, no se ejecuta la segunda, por tanto no hace falta poner nada más.
   }
 }
 
 console.log(moviesCategories);
+
+//Otra forma más larga
+
+const moviesFilter = (array) => {
+  const newArray = [];
+  for (let movie of array) {
+    for (let category of movie.categories) {
+      if (!newArray.includes(category)) {
+        newArray.push(category);
+      }
+    }
+  }
+  return newArray;
+};
+console.log(moviesFilter(movies));

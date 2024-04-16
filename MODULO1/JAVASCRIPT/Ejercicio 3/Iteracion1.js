@@ -8,12 +8,14 @@ const products = [
   "Camiseta de Basket",
   "Cinrurón de Orión",
   "AC/DC Camiseta",
+  "Bonita camiseta",
 ];
 
 const contador = (arrayProductos, nombre) => {
   const arrayCamisetas = [];
   arrayProductos.forEach((element) => {
-    element.includes(nombre) && arrayCamisetas.push(element);
+    element.toLowerCase().includes(nombre.toLowerCase()) &&
+      arrayCamisetas.push(element);
   });
   return arrayCamisetas;
 };

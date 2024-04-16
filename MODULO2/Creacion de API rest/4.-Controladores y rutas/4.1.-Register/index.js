@@ -4,18 +4,20 @@ const { connect } = require("./src/utils/db");
 //! ----------------------------------------------------------
 //?------------------ creamos el servidor web------------------
 //! ----------------------------------------------------------
-const app =
-  express(); /*le decimos que app es el servidor express y cada vez que quiero hacer algo sobre el servidor
-utilizo app*/
+const app = express();
 
 // vamos a configurar dotenv para poder utilizar las variables d entorno del .env
 dotenv.config();
 //! ----------------------------------------------------------
 //? ------------conectamos con la base de datos---------------
 //! ----------------------------------------------------------
-connect(); /**función para conectar a la bbdd (en este MongoDB). Dentro de esa función usamos la libreria moongose para 
-conectarnos a la bbdd */
+connect();
 
+//! ----------------------------------------------------------
+//?- ------------------- configurar cloudinary ----------------
+//! ----------------------------------------------------------
+const { configCloudinary } = require("./src/middleware/files.middleware");
+configCloudinary();
 //! -----------------VARIABLES CONSTANTES --> PORT
 
 const PORT = process.env.PORT;
@@ -23,26 +25,30 @@ const PORT = process.env.PORT;
 //! ----------------------------------------------------------
 //?- ------------------- CORS -------------------------------
 //! ----------------------------------------------------------
-const cors = require("cors"); // con las CORS configuramos el acceso a la API desde el navegador
+const cors = require("cors");
 
-app.use(cors()); // esta es la forma de configurar el servidor: le estamos diciendo que use CORS
+app.use(cors());
 
 //! ----------------- ----------------------------------------
 //? -----------------ROUTAS ---------------------------------
 //! ----------------- ----------------------------------------
+/**vamos a crear muchas rutas: de películas, usuarios, etc.  */
+
+const UserRoutes = require("./src/api/routes/User.routes");
+
+app.use(
+  "/api/v1/users/",
+  UserRoutes
+); /**estas son las rutas del usuario. Todas empiezan con el dominio + el puerto
+definido en la linea 70. 
+Aquí le digo la siguiente parte de la ruta "/api/v1/users/" más la parte de UserRoutes, que será regirterLargo o el 
+que sea. */
 
 //! --------------------------------------------------------------
 //? ------------------ limitaciones de cantidad en el back end-----
 //! ---------------------------------------------------------------
-app.use(
-  express.json({ limit: "5mb" })
-); /*hacemos el uso del back y le decimos va  a haber Json y url, que son formas
-de envío diferentes, y va a tener un limite de 5mb*/
-app.use(
-  express.urlencoded({ limit: "5mb", extended: false })
-); /*el true es una forma dif de enviar los datos.
-permite parsear los objetos de forma + optimizada, pero es más lento, por lo que provoca más problemas de asincronía.
-En false es más rápido, y hay dos formas de enviarlo: qs y querystring*, y aquí vamos a usar el querystring */
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb", extended: false }));
 
 //! ----------------------------------------------------------
 //? -----------------  ERRORES GENERALES Y RUTA NO ENCONTRADA

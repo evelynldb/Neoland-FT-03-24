@@ -16,10 +16,22 @@ let filterToys = [];
  * ¿Cómo se hace para eliminarlos?
  * */
 
-for (let juguete of toys) {
+/*for (let juguete of toys) {
   if (!juguete.name.includes("gato")) {
     filterToys.push(juguete);
   }
 }
 
-console.log(filterToys);
+console.log(filterToys);*/
+
+//TODO: aunque laura me dice que está bien haciendo un nuevo array sin gatos, hago esta otra forma, en la que array original saco los gatos...
+
+for (const toy of toys) {
+  if (toy.name.includes("gato")) {
+    const index = toys.indexOf(toy);
+    toys.splice(index, 1);
+    toys.splice(index, 2);
+  }
+}
+
+console.log(toys);
