@@ -150,3 +150,15 @@ console.log(!price);
 if (age !== "19") console.log("no tienes 18 años"); //  --- != (distinto valor) !== (distinto valor y tipo)
 
 age != 18 && console.log("no tienes 18 años");
+
+let name = "Evelyn";
+
+const funcionFlecha = () => {
+  let name = "Antonio";
+  console.log("name", name);
+};
+
+// name = "pedro"
+
+funcionFlecha();
+console.log("name fuera", name);

@@ -29,6 +29,12 @@ const cors = require("cors");
 
 app.use(cors());
 
+//! --------------------------------------------------------------
+//? ------------------ limitaciones de cantidad en el back end-----
+//! ---------------------------------------------------------------
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb", extended: false }));
+
 //! ----------------- ----------------------------------------
 //? -----------------ROUTAS ---------------------------------
 //! ----------------- ----------------------------------------
@@ -43,12 +49,6 @@ app.use(
 definido en la linea 70. 
 Aquí le digo la siguiente parte de la ruta "/api/v1/users/" más la parte de UserRoutes, que será regirterLargo o el 
 que sea. */
-
-//! --------------------------------------------------------------
-//? ------------------ limitaciones de cantidad en el back end-----
-//! ---------------------------------------------------------------
-app.use(express.json({ limit: "5mb" }));
-app.use(express.urlencoded({ limit: "5mb", extended: false }));
 
 //! ----------------------------------------------------------
 //? -----------------  ERRORES GENERALES Y RUTA NO ENCONTRADA
