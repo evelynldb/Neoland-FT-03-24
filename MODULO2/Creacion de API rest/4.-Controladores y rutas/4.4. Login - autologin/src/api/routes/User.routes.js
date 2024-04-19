@@ -7,6 +7,9 @@ const {
   registerWithRedirect,
   sendMailRedirect,
   resendCode,
+  checkNewUser,
+  login,
+  autoLogin,
 } = require("../controllers/User.controllers");
 const { upload } = require("../../middleware/files.middleware");
 
@@ -17,11 +20,14 @@ const { upload } = require("../../middleware/files.middleware");
 UserRoutes.post("/registerLargo", upload.single("image"), registerLargo);
 UserRoutes.post("/registerUtil", upload.single("image"), registerUtil);
 UserRoutes.post("/resend", resendCode);
+UserRoutes.post("/check", checkNewUser);
+UserRoutes.post("/login", login);
+UserRoutes.post("/login/autologin", autoLogin);
 
 //!------------------------------------------------------------------------
 //?--------------------------------RUTAS CON REDIRECT----------------------
 //!------------------------------------------------------------------------
-UserRoutes.post("/register", upload.single("image"), registerWithRedirect); //enemos que meter lo de image, para usar multipart y que envie el body. sino, enviaba el email pero sin body.
+UserRoutes.post("/register", upload.single("image"), registerWithRedirect);
 
 //!---------------- REDIRECT-------------------------------
 UserRoutes.post("/register/sendMail/:id", sendMailRedirect);
