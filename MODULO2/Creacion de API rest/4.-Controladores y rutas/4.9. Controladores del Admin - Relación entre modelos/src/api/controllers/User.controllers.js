@@ -690,7 +690,7 @@ const modifyPassword = async (req, res, next) => {
 
 /**
  * PASOS A SEGUIR
- * 1. Cosas que no queremos que actualice el usuario pero:
+ * 1. Cosas que NO queremos que actualice el usuario pero:
   - rol,
   - _id
   - email
