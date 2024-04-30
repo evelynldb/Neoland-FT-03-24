@@ -19,4 +19,5 @@ CharacterRoutes.get("/get/id/:id", getById);
 CharacterRoutes.patch("/:id", [isAuth], upload.single("image"), update);
 CharacterRoutes.delete("/:id", [isAuth], deleteCharacter);
 CharacterRoutes.patch("/like/:idCharacter", [isAuth], toggleLikeCharacter);
+
 module.exports = CharacterRoutes;

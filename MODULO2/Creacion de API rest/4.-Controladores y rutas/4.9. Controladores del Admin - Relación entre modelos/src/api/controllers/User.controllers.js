@@ -37,11 +37,18 @@ const randomPassword = require("../../utils/randomPassword");
 //! -----------------------------------------------------------------------------
 
 const registerLargo = async (req, res, next) => {
+  /**hago funcion asincrona, porque hago peticion a mongodb y no va a ser inmediata, 
+voy a tener que hacer una llamada a mongo y esperar. */
+  /**REQUEST es la petición http; si es la creación de un usuario me vendrá
+toda la info del usuario, y aparte mucha + info adicional. La RES es la repsuesta que le vamos a dar al cliente (éxito, error, lo que queramos decir)
+ Y el NEXT es para que ejecute el sgte midelware */
+
   // capturamos la imagen nueva subida a cloudinary
+
   let catchImg = req.file?.path;
   try {
     // actualizamos los elementos unique del modelo
-    await User.syncIndexes();
+    await User.syncIndexes(); //primero el modelo, después el método.
 
     const { email, name } = req.body; // lo que enviamos por la parte del body de la request
 
@@ -109,37 +116,54 @@ const registerLargo = async (req, res, next) => {
   } catch (error) {
     // SIEMPRE QUE HAY UN ERROR GENERAL TENEMOS QUE BORRAR LA IMAGEN QUE HA SUBIDO EL MIDDLEWARE
     if (req.file) deleteImgCloudinary(catchImg);
-    return next(error);
+    return next(error); // cuando lo envío por el next y no por la respuesta es porque lo quiero guardar!
   }
 };
 //! -----------------------------------------------------------------------------
 //? ----------------------------REGISTER CORTO EN CODIGO ------------------------
 //! -----------------------------------------------------------------------------
 
+/**Es el mismo código que el register largo. Lo completamos con el estado. Y el util tendremos un archivo
+ * que es el que tiene la funcionalidad para envíar el correo
+ * Este codigo hace lo mismo que antes.
+ */
 const registerUtil = async (req, res, next) => {
-  let catchImg = req.file?.path;
+  let catchImg = req.file?.path; //1. captura la imagen
   try {
     await User.syncIndexes();
 
-    const { email, name } = req.body;
+    const { email, name } = req.body; //hacemos un destructuring del body (insomnia)
 
     const userExist = await User.findOne(
+      /**  Con ese destructuring, cogemos el modelo, y con el findONe le decimos que encuentre al menos
+       * una coincidencia en email o name
+       */
       { email: req.body.email },
       { name: req.body.name }
     );
     if (!userExist) {
+      //si existe no entra por aquí y va directo al else del error 409.
       let confirmationCode = randomCode();
-      const newUser = new User({ ...req.body, confirmationCode });
+      const newUser = new User({
+        ...req.body,
+        confirmationCode,
+      }); /**instanciamos un nuevo usuario, donde le metermos
+      una copia del req.body y añadimos una clave adicional que es el confirmationCOde*/
       if (req.file) {
+        //generada la instancia del usuario comprobamos si ha metido o no imagen.
+
         newUser.image = req.file.path;
       } else {
         newUser.image = "https://pic.onlinewebfonts.com/svg/img_181369.png";
       }
-
+      /** siempre que tenemos diferentes asincronías ponemos un TRY CATCH por cada asincronía. Si no se cumple
+       * lo que hay dentro no pasa al siguiente (como una muñeca rusa! No hay que ponerlo uno debajo del otro porque eso es un ERROR!)
+       */
       try {
         const userSave = await newUser.save();
-
+        //cuando hacemos el guardado del usuaio tenemos que ver que realmente se ha guardado.
         if (userSave) {
+          //si se ha guardado, llamamos a la función sendEmail que viene de util, que recibe el mail , el nombre y el confirmation code del usuario.
           sendEmail(email, name, confirmationCode);
           setTimeout(() => {
             if (getTestEmailSend()) {
@@ -163,6 +187,8 @@ const registerUtil = async (req, res, next) => {
       }
     } else {
       if (req.file) deleteImgCloudinary(catchImg);
+      //como ya existe el usuario, borro la imagen, porque no tenemos por que guardarla en nuestra nube.
+
       return res.status(409).json("this user already exist");
     }
   } catch (error) {
@@ -215,6 +241,7 @@ const registerWithRedirect = async (req, res, next) => {
         if (userSave) {
           // si hay usuario hacemos el redirech
           return res.redirect(
+            // diferencia con lo anterior: cuando existe y se ha enviado hacemos un redirect a otra RUTA!
             303,
             `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}`
           );
@@ -280,6 +307,7 @@ const sendMailRedirect = async (req, res, next) => {
         console.log("Email sent: " + info.response);
         // damos feedback al frontal de que se ha enviado correctamente el codigo
         return res.status(200).json({
+          //mirar en helper
           user: userDB,
           confirmationCode: userDB.confirmationCode,
         });
@@ -401,6 +429,8 @@ const checkNewUser = async (req, res, next) => {
               : "ok delete user",
           });
         } catch (error) {
+          // siempre en el catch devolvemos un 500 con el error general
+
           return res
             .status(404)
             .json(error.message || "error general delete user");
@@ -491,6 +521,10 @@ const autoLogin = async (req, res, next) => {
 //! -----------------------------------------------------------------------------
 //? -----------------------CONTRASEÑAS Y SUS CAMBIOS-----------------------------
 //! -----------------------------------------------------------------------------
+
+//? -----------------------------------------------------------------------------
+//! ------------------CAMBIO DE CONTRASEÑA CUANDO NO ESTAS LOGADO---------------
+//? -----------------------------------------------------------------------------
 
 const changePassword = async (req, res, next) => {
   /**
@@ -828,36 +862,6 @@ const update = async (req, res, next) => {
 };
 
 //! -----------------------------------------------------------------------------
-//? ---------------------------------DELETE--------------------------------------
-//! -----------------------------------------------------------------------------
-
-const deleteUser = async (req, res, next) => {
-  try {
-    const { _id, image } = req.user;
-    await User.findByIdAndDelete(_id);
-
-    // hacemos un test para ver si lo ha borrado
-    if (await User.findById(_id)) {
-      // si ha encontrado al usuario es que no lo ha borrado, por tanto es error 404
-      return res.status(404).json("not deleted"); ///
-    } else {
-      // en caso que se haya borrado, borramos todo lo que haya hecho el usuario
-      /**
-       * HAY QUE BORRARR TODO LO QUE HAY HECHO EL USER: LIKE, COMENTARIOS, LOS CHATS, LOS POSTS , REVIEWS ....
-       */
-      deleteImgCloudinary(image);
-      /**aquií, como no tenemos más modelos, pues no tenemos que hacer nada más, pero si tuviéramos más
-       * hay que ir borrando uno por uno con todos los try cacht que necesitemos.
-       */
-
-      return res.status(200).json("ok delete");
-    }
-  } catch (error) {
-    return next(error);
-  }
-};
-
-//! -----------------------------------------------------------------------------
 //? ---------------------------------findById------------------------------------
 //! -----------------------------------------------------------------------------
 /**El findById es un get.¿cómo recibimos el ID? con un params -> :
@@ -935,6 +939,311 @@ const byGender = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ---------------------------------FOLLOW USER--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const followUserToggle = async (req, res, next) => {
+  try {
+    const { idUserSeQuiereSeguir } = req.params; //por el param recibimos el id de usuario que quiero seguir
+    const { followed } = req.user; // busco en el arrray de followed si ya le sigo o no este usuario. Si ya le sigo, como es un toggle quiere decir que le tengo que sacar.
+
+    if (followed.includes(idUserSeQuiereSeguir)) {
+      // si los que sigo esta el id del que quiero seguir lo saco del array. No solo hay que sacarlo de un sitio sino de dos: de lo mío y del otro.
+      //! si lo incluye, quiere decir lo sigo por lo que lo dejo de seguir
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $pull: {
+            followed: idUserSeQuiereSeguir,
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $pull: {
+              followers: req.user._id,
+            },
+          });
+
+          return res.status(200).json({
+            action: "he dejado de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update borrar de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    } else {
+      //! si no lo tengo como que lo sigo, lo empiezo a seguir
+
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $push: {
+            followed: idUserSeQuiereSeguir, //meto tu id como seguidor mío
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $push: {
+              followers: req.user._id, //y al otro le meto mi id como que le sigo.
+            },
+          });
+
+          return res.status(200).json({
+            action: "Lo empiezo a seguir de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update poner de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "error catch general",
+      message: error.message,
+    });
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? --------------------------------DELETE USER----------------------------------
+//! -----------------------------------------------------------------------------
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { _id, image } = req.user;
+    await User.findByIdAndDelete(_id);
+
+    // hacemos un test para ver si lo ha borrado
+    if (await User.findById(_id)) {
+      // si el usuario
+      return res.status(404).json("not deleted"); ///
+    } else {
+      /**
+       * HAY QUE BORRARR TODO LO QUE HAY HECHO EL USER: LIKE, COMENTARIOS, LOS CHATS, LOS POSTS , REVIEWS ....
+       */
+      deleteImgCloudinary(image);
+
+      /**
+       * 1) likes ---> Character
+       * 2) likes ---> Movies
+       * 3) likes ---> Messages
+       * 4) userOne, userTwo: Chat
+       * 5) owner -->Message
+       *
+       * 0) ---> borrar la persona
+       */
+
+      try {
+        await User.updateMany(
+          { followers: _id },
+          { $pull: { followers: _id } }
+        );
+        try {
+          await User.updateMany(
+            { followed: _id },
+            { $pull: { followed: _id } }
+          );
+          try {
+            //* 1) likes ---> Character
+            await Character.updateMany(
+              { likes: _id },
+              { $pull: { likes: _id } }
+            );
+
+            try {
+              //* 2) likes ---> Movies
+
+              await Movie.updateMany({ likes: _id }, { $pull: { likes: _id } });
+
+              try {
+                //* 3) likes ---> Messages
+                await Menssage.updateMany(
+                  { likes: _id },
+                  { $pull: { likes: _id } }
+                );
+                try {
+                  //* 4) userOne, userTwo: Chat
+                  await Chat.deleteMany({ userOne: _id });
+                  try {
+                    await Chat.deleteMany({ userTwo: _id });
+                    try {
+                      req.user.chats.forEach(async (idDeLosChatsBorrados) => {
+                        await User.updateMany(
+                          { chats: idDeLosChatsBorrados },
+                          { $pull: { chats: idDeLosChatsBorrados } }
+                        );
+                      });
+                      try {
+                        //* 5) owner -->Message
+                        await Menssage.deleteMany({ owner: _id });
+                        //! ----------REDIRECT--------------------------
+                        console.log("😘", req.user.postedMessages);
+                        return res.redirect(
+                          307,
+                          `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
+                            req.user.postedMessages
+                          )}`
+                        );
+                      } catch (error) {
+                        return res.status(404).json({
+                          error: "Messages deleteMany - owner",
+                          message: error.message,
+                        });
+                      }
+                    } catch (error) {
+                      return res.status(404).json({
+                        error:
+                          "User updateMany -- bucle de los id del resto de user de mis chats borrados",
+                        message: error.message,
+                      });
+                    }
+                  } catch (error) {
+                    return res.status(404).json({
+                      error: "chat deleteMany -- userTwo",
+                      message: error.message,
+                    });
+                  }
+                } catch (error) {
+                  return res.status(404).json({
+                    error: "chat deleteMany -- userOne",
+                    message: error.message,
+                  });
+                }
+              } catch (error) {
+                return res.status(404).json({
+                  error: " Menssage updateMany  --  likes",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " Movies updateMany  --  likes",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: " Character updateMany  --  likes",
+              message: error.message,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: " user updateMany  -- followers ",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: " user updateMany  -- followed ",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ----------------------------DELETE MENSAJES DEL USER-------------------------
+//! -----------------------------------------------------------------------------
+
+const deleteMessageDeleteUser = async (req, res, next) => {
+  try {
+    const { arrayIdMessages } = req.params;
+    const parseArray = JSON.parse(arrayIdMessages);
+    console.log("😘", parseArray);
+
+    await parseArray.forEach(async (id) => {
+      try {
+        const mensageDelete = await Menssage.findByIdAndDelete(id);
+
+        if (mensageDelete.type == "public") {
+          try {
+            // update many Movie - comments
+
+            await Movie.updateMany(
+              { comments: id },
+              { $pull: { comments: id } }
+            );
+
+            try {
+              // update many Characters - comments
+              await Character.updateMany(
+                { comments: id },
+                { $pull: { comments: id } }
+              );
+              try {
+                // update many User - commentsPublicByOther
+                await User.updateMany(
+                  { commentsPublicByOther: id },
+                  { $pull: { commentsPublicByOther: id } }
+                );
+              } catch (error) {
+                return res.status(404).json({
+                  error: " user updateMany  -- commentsPublicByOther ",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " character updateMany  -- comments ",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: "movie updateMany  --  comments ",
+              message: error.message,
+            });
+          }
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "message delete",
+          message: error.message,
+        });
+      }
+    });
+
+    return await res.status(200).json("delete ok");
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
 module.exports = {
   registerLargo,
   registerUtil,
@@ -953,4 +1262,6 @@ module.exports = {
   byId,
   byName,
   byGender,
+  deleteMessageDeleteUser,
+  followUserToggle,
 };
