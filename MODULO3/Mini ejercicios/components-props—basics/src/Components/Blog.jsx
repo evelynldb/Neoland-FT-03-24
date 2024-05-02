@@ -39,7 +39,8 @@ export const Blog = () => {
           paragraph={entry.paragraph}
         />
         /**Asigno una clave única a cada componente Article usando el índex del array como
-         *  clave (key={index}) para identificar cada componente de manera única
+         *  clave (key={index}) para ayudar a React a identificar cada componente de manera
+         *  única y optimizar la renderización.
          */
       ))}
     </div>
