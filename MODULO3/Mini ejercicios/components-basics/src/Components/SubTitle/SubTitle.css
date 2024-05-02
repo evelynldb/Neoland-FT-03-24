@@ -1,0 +1,19 @@
+.subtitleUno {
+  color: #2fa3a3;
+  font-size: 2em;
+  font-weight: bold; /* Negrita */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  animation: entrada-derecha 1s ease forwards;
+}
+
+@keyframes entrada-derecha {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

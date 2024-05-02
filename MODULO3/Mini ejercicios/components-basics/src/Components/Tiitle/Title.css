@@ -1,0 +1,19 @@
+.tituloUno {
+  color: #d38ac4;
+  font-size: 3em;
+  font-weight: bold; /* Negrita */
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: entrada-derecha 1s ease forwards;
+}
+
+@keyframes entrada-derecha {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

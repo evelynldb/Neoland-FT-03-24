@@ -1,0 +1,62 @@
+/* Estilo para el contenedor del artículo */
+.articleContainer {
+  margin-bottom: 35px; /* Espacio entre artículos */
+  border: 1px solid #ccc; /* Borde alrededor del artículo */
+  padding: 20px; /* Espaciado interior del artículo */
+  border-radius: 5px; /* Bordes redondeados */
+}
+
+/* Estilo para el título */
+.articleTitle {
+  font-size: 40px; /* Tamaño del texto del título */
+  border: 1px solid #ccc;
+  height: 40px;
+  padding-left: 10px;
+  font-weight: bold; /* Negrita */
+  margin-bottom: 10px; /* Espacio inferior entre el título y el subtítulo */
+}
+
+.Title {
+  color: #d38ac4;
+  font-size: 3em;
+  font-weight: bold; /* Negrita */
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  animation: entrada-derecha 1s ease forwards;
+}
+
+@keyframes entrada-derecha {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Estilo para el subtítulo */
+.articleSubTitle {
+  font-size: 18px; /* Tamaño del texto del subtítulo */
+  font-style: italic; /* Cursiva */
+  margin-bottom: 10px; /* Espacio inferior entre el subtítulo y la imagen */
+  border: 1px solid #ccc;
+  height: 30px;
+  padding-left: 10px;
+}
+
+/* Estilo para la imagen */
+.article-image {
+  border-radius: 5px; /* Bordes redondeados */
+  margin-bottom: 10px; /* Espacio inferior entre la imagen y el párrafo */
+}
+
+/* Estilo para el párrafo */
+.articleParagraph {
+  font-size: 16px; /* Tamaño del texto del párrafo */
+  line-height: 1.5; /* Altura de línea */
+  border: 1px solid blue;
+  height: 70px;
+  padding-left: 10px;
+}

@@ -12,25 +12,27 @@ la consola podéis usar el index como `key={index}` .
  cuando este valor se modifique. */
 
 function App() {
-  const arr = ["a", "b", "c"];
+  const arr = ["Aa", " ", "Bb", "Cc"];
 
-  const [count, setCount] = useState(0); // variable, función = y defino el valor inicial, y uso la virable donde quiera
-  const [texto, print] = useState("");
-  const [texto2, print2] = useState(false);
+  const [count, setCount] = useState(0); // variable, función = y defino el valor inicial, y uso la variable donde quiera
+  const [texto, setTexto] = useState("");
+  const [texto2, setTexto2] = useState(false);
 
   const actualizarEstado = () => {
     setCount((value) => {
+      //aquí le digo cómo funciona el contador. podría decir decirle aquí que fuera de 5 en 5.
       value = value == 23 ? -1 : value;
       return value + 1;
     });
 
-    print(() => {
+    setTexto(() => {
+      //aquí le digo como actualiza el texto, en función del count
       if (count >= 6 && count < 12) {
         return "Buenos días";
       } else if (count >= 12 && count < 20) {
-        return "Buenos tardes";
+        return "Buenas tardes";
       } else {
-        return "Buenos noches";
+        return "Buenas noches";
       }
     });
   };
@@ -46,7 +48,7 @@ function App() {
         </a>
       </div>
       <h1>Vite + React</h1>
-      <p>{texto}</p>
+      <h2>{texto}</h2>
       <div>
         {arr.map((item, index) => (
           <span key={index}>{item}</span>
@@ -54,7 +56,7 @@ function App() {
       </div>
       <div>
         <p>{texto2}</p>
-        <button onClick={() => print2(() => "SALE!")}>Aparece!!</button>
+        <button onClick={() => setTexto2(() => "SALE!")}>Aparece!!</button>
       </div>
       <div className="card">
         <button onClick={() => actualizarEstado()}>count is {count}</button>
