@@ -1,0 +1,28 @@
+.languagesContainer {
+  max-width: 800px;
+  display: flex;
+  margin: 0 auto;
+  border: 1px solid #afbedca1;
+  padding: 20px;
+  background-color: #aebcfba1;
+}
+
+.languagesTitle {
+  font-size: 24px;
+  color: #333;
+  margin: 10%;
+  padding-right: 20px;
+}
+
+.languagesInfo {
+  margin-top: 20px;
+
+  & h3 {
+    font-size: 23px;
+    color: #000000;
+  }
+  & p {
+    font-size: 16px;
+    color: #666;
+  }
+}

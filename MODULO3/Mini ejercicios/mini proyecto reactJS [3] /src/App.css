@@ -1,0 +1,28 @@
+main {
+  min-height: 70vh;
+}
+
+/* Estilos para el contenedor principal de la aplicación */
+.mainContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+main > div {
+  width: 100%; /* Ancho total del main */
+  margin-bottom: 0px; /* Espacio entre componentes */
+}
+/* Estilos para el contenedor de Read */
+.readContainer {
+}
+
+/* Estilos para el contenedor de Sports */
+.sportsContainer {
+}
+.movieContainer {
+}
+
+.songsContainerApp {
+  justify-content: center;
+}

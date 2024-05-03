@@ -1,0 +1,44 @@
+.readContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(207, 207, 91, 0.532);
+}
+
+.readTitle {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.bookInfo {
+  display: flex;
+  align-items: center;
+}
+
+.bookImage {
+  width: 150px;
+  height: auto;
+  margin-right: 20px;
+}
+
+.bookDetails {
+  flex: 1;
+}
+
+.otherBooks {
+  margin-top: 30px;
+}
+
+.otherBooksTitle {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.otherBooksList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.otherBooksItem {
+  margin-bottom: 10px;
+}

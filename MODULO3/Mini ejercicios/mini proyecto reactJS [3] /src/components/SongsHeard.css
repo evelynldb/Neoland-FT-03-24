@@ -1,0 +1,25 @@
+.songsHeardContainer {
+  max-width: 800px;
+  display: flex;
+  margin: 0 auto;
+  border: 1px solid #ccdcafa1;
+  padding: 20px;
+  background-color: #dfdfa7a1;
+}
+
+.songsHeardContainer h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.songsHeardContainer ul {
+  list-style: none;
+  margin-left: 30px;
+}
+
+.songsHeardContainer li {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+}
