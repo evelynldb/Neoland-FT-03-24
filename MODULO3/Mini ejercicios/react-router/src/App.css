@@ -1,0 +1,28 @@
+main {
+  min-height: 70vh;
+  padding: 20px;
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid green;
+  border-radius: 5px;
+}
+
+.navContainer a {
+  text-decoration: none; /* Eliminar subrayado predeterminado */
+  font-weight: bold;
+  color: #489943;
+  margin-right: 20px; /* Margen a la derecha para separar los enlaces */
+}
+
+.navContainer a:hover {
+  color: #555; /* Cambiar color de texto al pasar el cursor */
+}
+
+h1 {
+  text-align: center;
+}

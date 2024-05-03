@@ -37,6 +37,10 @@ function App() {
     });
   };
 
+  const toggleTexto2 = () => {
+    setTexto2(!texto2);
+  };
+
   return (
     <>
       <div>
@@ -55,8 +59,8 @@ function App() {
         ))}
       </div>
       <div>
-        <p>{texto2}</p>
-        <button onClick={() => setTexto2(() => "SALE!")}>Aparece!!</button>
+        <button onClick={toggleTexto2}>Aparece!!</button>
+        {texto2 && <p>Aparezco y me voy</p>}
       </div>
       <div className="card">
         <button onClick={() => actualizarEstado()}>count is {count}</button>
