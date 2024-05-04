@@ -1,0 +1,30 @@
+.homeContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.homeTitle {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.homeParagraph {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5; /* Mayor interlineado */
+  text-align: justify;
+}
+
+.visitedPageLink {
+  /* Estilos para la etiqueta span */
+  font-weight: bold;
+  cursor: pointer; /* Cambia el cursor al puntero al pasar sobre el enlace */
+}
+
+.visitedContainer {
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px dotted grey;
+}
