@@ -1,0 +1,46 @@
+main {
+  min-height: 70vh;
+  background-color: #6dbbbb4e;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.custom-btn {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fec76e; /* Color de fondo del botón */
+  color: white; /* Color del texto del botón */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.custom-btn:hover {
+  background-color: #fec76e; /* Color de fondo del botón al pasar el ratón por encima */
+}
+
+.btn-4 {
+  background-color: #fec76e; /* Color de fondo específico para este botón */
+}
+
+.btn-4:hover {
+  background-color: #fe76b6; /* Color de fondo al pasar el ratón por encima */
+}
+
+.divider {
+  width: 30%;
+  height: 1px;
+  background-color: #ccc; /* color de la línea divisoria */
+  margin: 20px 0; /* espacio entre la línea divisoria y los elementos */
+}
