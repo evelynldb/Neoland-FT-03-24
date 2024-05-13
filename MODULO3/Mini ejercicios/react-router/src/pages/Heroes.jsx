@@ -11,7 +11,7 @@ const Heroes = () => {
         <ul>
           {heroes.map((heroe) => (
             <li key={heroe.id}>
-              <Link to={`/heroes/${heroe.id}`}>
+              <Link to={`/heroe/${heroe.id}`}>
                 <HeroeDetail heroe={heroe} />
               </Link>
             </li>

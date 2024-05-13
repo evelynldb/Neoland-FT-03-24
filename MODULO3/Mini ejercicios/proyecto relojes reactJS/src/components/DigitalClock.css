@@ -1,0 +1,17 @@
+.digital-clock {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 200px;
+  background-color: #1b1a1a;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.digital-clock h2 {
+  font-size: 24px;
+  color: #acfe2e;
+  margin: 0;
+  padding: 0;
+}
